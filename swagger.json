@@ -16,7 +16,7 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:5000"
+      "url": "https://biblioteca-ojl0.onrender.com"
     }
   ],
   "tags": [
@@ -34,7 +34,7 @@
     }
   ],
   "paths": {
-    "/registroUsuario": {
+    "/usuario": {
       "post": {
         "tags": [
           "Usuarios"
@@ -167,8 +167,83 @@
           }
         }
       }
+      ,
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Listar todos los Usuarios",
+        "description": "Este endpoint permite obtener un listado completo de los Usuarios registrados en el sistema. La respuesta incluye información básica como id,nombres,apellidos,estado, correo,telefono,direccion y contraseña.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta exitosa que contiene la lista de aprendices.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "primer_nombre",
+                      "primer_apellido",
+                      "estado",
+                      "correo",
+                      "telefono",
+                      "direccion",
+                      "contraseña"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "primer_nombre": {
+                        "type": "string"
+                      },
+                      "primer_apellido": {
+                        "type": "string"
+                      },
+                      "estado": {
+                        "type": "integer"
+                      },
+                      "correo": {
+                        "type": "string"
+                      },
+                      "telefono": {
+                        "type": "string"
+                      },
+                      "direccion": {
+                        "type": "string"
+                      },
+                      "contrasenia": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "id": "6",
+                      "primer_nombre": "diana",
+                      "primer_apellido": "ortiz",
+                      "correo": "danaortiz0711@gmail.com",
+                      "estado": "1",
+                      "telefono": "3043306181",
+                      "direccion": "soledad",
+                      "contrasenia": "Diana2006$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
     },
-    "/login": {
+    "/usuario/login": {
       "post": {
         "tags": [
           "Usuarios"
@@ -241,7 +316,7 @@
         }
       }
     },
-    "/editarUsuario/{uid}": {
+    "/usuario/{uid}": {
       "put": {
         "tags": [
           "Usuarios"
@@ -397,8 +472,7 @@
           }
         }
       }
-    },
-    "/eliminarUsuario/{uid}": {
+      ,
       "delete": {
         "tags": [
           "Usuarios"
@@ -460,83 +534,8 @@
         }
       }
     },
-    "/listarUsuarios": {
-      "get": {
-        "tags": [
-          "Usuarios"
-        ],
-        "summary": "Listar todos los Usuarios",
-        "description": "Este endpoint permite obtener un listado completo de los Usuarios registrados en el sistema. La respuesta incluye información básica como id,nombres,apellidos,estado, correo,telefono,direccion y contraseña.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Respuesta exitosa que contiene la lista de aprendices.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "required": [
-                      "id",
-                      "primer_nombre",
-                      "primer_apellido",
-                      "estado",
-                      "correo",
-                      "telefono",
-                      "direccion",
-                      "contraseña"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "integer"
-                      },
-                      "primer_nombre": {
-                        "type": "string"
-                      },
-                      "primer_apellido": {
-                        "type": "string"
-                      },
-                      "estado": {
-                        "type": "integer"
-                      },
-                      "correo": {
-                        "type": "string"
-                      },
-                      "telefono": {
-                        "type": "string"
-                      },
-                      "direccion": {
-                        "type": "string"
-                      },
-                      "contrasenia": {
-                        "type": "string"
-                      }
-                    },
-                    "example": {
-                      "id": "6",
-                      "primer_nombre": "diana",
-                      "primer_apellido": "ortiz",
-                      "correo": "danaortiz0711@gmail.com",
-                      "estado": "1",
-                      "telefono": "3043306181",
-                      "direccion": "soledad",
-                      "contrasenia": "Diana2006$"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
 
-    "/registroCategoria": {
+    "/categorias": {
       "post": {
         "tags": [
           "Categorias"
@@ -608,8 +607,57 @@
           }
         }
       }
+      ,
+      "get": {
+        "tags": [
+          "Categorias"
+        ],
+        "summary": "Listar todas las categorias",
+        "description": "Este endpoint permite obtener un listado completo de las categorias registradas en el sistema. La respuesta incluye información básica como id,Tipo y Estado.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta exitosa que contiene la lista de categorias.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "cat_tipo",
+                      "estado"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "cat_tipo": {
+                        "type": "string"
+                      },
+                      "estado": {
+                        "type": "integer"
+                      }
+                    },
+                    "example": {
+                      "id": "6",
+                      "cat_tipo": "Ingles",
+                      "estado": "1"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
-    "/editarCategoria/{uid}": {
+    "/categorias/{uid}": {
       "put": {
         "tags": [
           "Categorias"
@@ -727,8 +775,7 @@
           }
         }
       }
-    },
-    "/eliminarCategoria/{uid}": {
+      ,
       "delete": {
         "tags": [
           "Categorias"
@@ -790,58 +837,8 @@
         }
       }
     },
-    "/listarCategoria": {
-      "get": {
-        "tags": [
-          "Categorias"
-        ],
-        "summary": "Listar todas las categorias",
-        "description": "Este endpoint permite obtener un listado completo de las categorias registradas en el sistema. La respuesta incluye información básica como id,Tipo y Estado.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Respuesta exitosa que contiene la lista de categorias.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "required": [
-                      "id",
-                      "cat_tipo",
-                      "estado"
-                    ],
-                    "properties": {
-                      "id": {
-                        "type": "integer"
-                      },
-                      "cat_tipo": {
-                        "type": "string"
-                      },
-                      "estado": {
-                        "type": "integer"
-                      }
-                    },
-                    "example": {
-                      "id": "6",
-                      "cat_tipo": "Ingles",
-                      "estado": "1"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
 
-    "/listarAutores": {
+    "/autores": {
       "get": {
         "tags": [
           "Autores"
@@ -890,8 +887,7 @@
           }
         }
       }
-    },
-    "/registroAutor": {
+      ,
       "post": {
         "tags": [
           "Autores"
@@ -964,7 +960,7 @@
         }
       }
     },
-    "/editarAutor/{uid}": {
+    "/autores/{uid}": {
       "put": {
         "tags": [
           "Autores"
@@ -1082,8 +1078,7 @@
           }
         }
       }
-    },
-    "/eliminarAutor/{uid}": {
+      ,
       "delete": {
         "tags": [
           "Autores"
