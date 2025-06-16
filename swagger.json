@@ -1,0 +1,1149 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Gestión de Biblioteca",
+    "description": "API para registrar, listar, editar y eliminar.",
+    "version": "1.0.0"
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Usuarios",
+      "description": "Todo sobre la gestión de usuarios"
+    },
+    {
+      "name": "Categorias",
+      "description": "Todo sobre la gestión de categorias"
+    },
+    {
+      "name": "Autores",
+      "description": "Todo sobre la gestión de autores"
+    }
+  ],
+  "paths": {
+    "/registroUsuario": {
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Registrar un nuevo usuario",
+        "description": "Este endpoint permite registrar un nuevo usuario en el sistema. Requiere enviar un objeto JSON con los datos del usuario como nombres,apellidos, correo,telefono,direccion y contraseña.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "primer_nombre",
+                  "primer_apellido",
+                  "correo",
+                  "telefono",
+                  "direccion",
+                  "contraseña"
+                ],
+                "properties": {
+                  "primer_nombre": {
+                    "type": "string"
+                  },
+                  "primer_apellido": {
+                    "type": "string"
+                  },
+                  "correo": {
+                    "type": "string"
+                  },
+                  "telefono": {
+                    "type": "string"
+                  },
+                  "direccion": {
+                    "type": "string"
+                  },
+                  "contrasenia": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "primer_nombre": "diana",
+                  "primer_apellido": "ortiz",
+                  "correo": "danaortiz0711@gmail.com",
+                  "telefono": "3043306181",
+                  "direccion": "soledad",
+                  "contrasenia": "Diana2006$"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el usuario fue registrado correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Usuario Registrado"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "faltan parametro en la peticion..."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Correo Invalido"
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Contraseña Invalida"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Iniciar sesion",
+        "description": "Permite iniciar sesion al usuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "correo",
+                  "contraseña"
+                ],
+                "properties": {
+                  "correo": {
+                    "type": "string"
+                  },
+                  "contrasenia": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "correo": "danaortiz0711@gmail.com",
+                  "contrasenia": "Diana2006$"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el usuario fue logueado correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Iniciando sesion"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "El correo no esta registrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/editarUsuario/{uid}": {
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Editar usuario",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "put",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Este endpoint permite editar un  usuario en el sistema. Requiere enviar un objeto JSON con los datos del usuario como nombres,apellidos, correo,telefono,direccion.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "primer_nombre",
+                  "primer_apellido",
+                  "correo",
+                  "telefono",
+                  "direccion"
+                ],
+                "properties": {
+                  "primer_nombre": {
+                    "type": "string"
+                  },
+                  "primer_apellido": {
+                    "type": "string"
+                  },
+                  "correo": {
+                    "type": "string"
+                  },
+                  "telefono": {
+                    "type": "string"
+                  },
+                  "direccion": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "primer_nombre": "diana",
+                  "primer_apellido": "ortiz",
+                  "correo": "danaortiz0711@gmail.com",
+                  "telefono": "3043306181",
+                  "direccion": "soledad"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el usuario fue registrado correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Usuario Actualizado"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "faltan parametro en la peticion..."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Usuario no encontrado"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Correo Invalido"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "El correo electrónico ya está registrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eliminarUsuario/{uid}": {
+      "delete": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Eliminar un Usuario por ID",
+        "description": "Este endpoint permite eliminar un Usuario del sistema utilizando su identificador único (ID). Si el ID proporcionado es válido y corresponde a un Usuario existente, se eliminará de forma permanente.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el Usuario fue eliminado correctamente del sistema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Usuario Eliminado"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "No se encontro ningun usuario"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/listarUsuarios": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Listar todos los Usuarios",
+        "description": "Este endpoint permite obtener un listado completo de los Usuarios registrados en el sistema. La respuesta incluye información básica como id,nombres,apellidos,estado, correo,telefono,direccion y contraseña.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta exitosa que contiene la lista de aprendices.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "primer_nombre",
+                      "primer_apellido",
+                      "estado",
+                      "correo",
+                      "telefono",
+                      "direccion",
+                      "contraseña"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "primer_nombre": {
+                        "type": "string"
+                      },
+                      "primer_apellido": {
+                        "type": "string"
+                      },
+                      "estado": {
+                        "type": "integer"
+                      },
+                      "correo": {
+                        "type": "string"
+                      },
+                      "telefono": {
+                        "type": "string"
+                      },
+                      "direccion": {
+                        "type": "string"
+                      },
+                      "contrasenia": {
+                        "type": "string"
+                      }
+                    },
+                    "example": {
+                      "id": "6",
+                      "primer_nombre": "diana",
+                      "primer_apellido": "ortiz",
+                      "correo": "danaortiz0711@gmail.com",
+                      "estado": "1",
+                      "telefono": "3043306181",
+                      "direccion": "soledad",
+                      "contrasenia": "Diana2006$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/registroCategoria": {
+      "post": {
+        "tags": [
+          "Categorias"
+        ],
+        "summary": "Registrar una nueva categoria",
+        "description": "Este endpoint permite registrar una nueva categoria en el sistema. Requiere enviar un objeto JSON con el dato de la categoria como el tipo",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "cat_tipo"
+                ],
+                "properties": {
+                  "cat_tipo": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "cat_tipo": "Español"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que la categoria fue registrada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Categoria Registrada"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "faltan parametro en la peticion..."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/editarCategoria/{uid}": {
+      "put": {
+        "tags": [
+          "Categorias"
+        ],
+        "summary": "Editar categoria",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "put",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Este endpoint permite editar una categoria en el sistema. Requiere enviar un objeto JSON con los datos de categoria como cat_tipo.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "cat_tipo"
+                ],
+                "properties": {
+                  "cat_tipo": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "cat_tipo": "Ingles"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que la categoria fue editada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Categoria Actualizada"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "faltan parametro en la peticion..."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Categoria no encontrada"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "La categoria ya está registrada"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eliminarCategoria/{uid}": {
+      "delete": {
+        "tags": [
+          "Categorias"
+        ],
+        "summary": "Eliminar una Categoria por el UID",
+        "description": "Este endpoint permite eliminar una categoria del sistema utilizando su identificador único (UID). Si el UID proporcionado es válido y corresponde a una categoria existente, se cambiara de estado a inactivo.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que la categoria fue eliminada correctamente del sistema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Categoria Eliminada"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "No se encontro ninguna categoria"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/listarCategoria": {
+      "get": {
+        "tags": [
+          "Categorias"
+        ],
+        "summary": "Listar todas las categorias",
+        "description": "Este endpoint permite obtener un listado completo de las categorias registradas en el sistema. La respuesta incluye información básica como id,Tipo y Estado.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta exitosa que contiene la lista de categorias.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "cat_tipo",
+                      "estado"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "cat_tipo": {
+                        "type": "string"
+                      },
+                      "estado": {
+                        "type": "integer"
+                      }
+                    },
+                    "example": {
+                      "id": "6",
+                      "cat_tipo": "Ingles",
+                      "estado": "1"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/listarAutores": {
+      "get": {
+        "tags": [
+          "Autores"
+        ],
+        "summary": "Listar todos los autores",
+        "description": "Este endpoint permite obtener un listado completo de los autores registrados en el sistema. La respuesta incluye información básica como id,Nombre y Estado.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Respuesta exitosa que contiene la lista de autores.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "aut_nombre",
+                      "estado"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "aut_nombre": {
+                        "type": "string"
+                      },
+                      "estado": {
+                        "type": "integer"
+                      }
+                    },
+                    "example": {
+                      "id": "6",
+                      "aut_nombre": "gabriel garcia marquez",
+                      "estado": "1"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/registroAutor": {
+      "post": {
+        "tags": [
+          "Autores"
+        ],
+        "summary": "Registrar un nuevo autor",
+        "description": "Este endpoint permite registrar un nuevo autor en el sistema. Requiere enviar un objeto JSON con el dato del autor como el nombre",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "aut_nombre"
+                ],
+                "properties": {
+                  "aut_nombre": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "aut_nombre": "Gabriel"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el autor fue registrado correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Autor Registrado"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "faltan parametro en la peticion..."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/editarAutor/{uid}": {
+      "put": {
+        "tags": [
+          "Autores"
+        ],
+        "summary": "Editar autor",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "put",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Este endpoint permite editar un autor en el sistema. Requiere enviar un objeto JSON con los datos de categoria como aut_nombre.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "aut_nombre"
+                ],
+                "properties": {
+                  "aut_nombre": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "aut_nombre": "gabriel garcia"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el autor fue editado correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Autor Actualizado"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "faltan parametro en la peticion..."
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Autor no encontrado"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "El autor ya está registrado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eliminarAutor/{uid}": {
+      "delete": {
+        "tags": [
+          "Autores"
+        ],
+        "summary": "Eliminar un Autor por el UID",
+        "description": "Este endpoint permite eliminar un autor del sistema utilizando su identificador único (UID). Si el UID proporcionado es válido y corresponde a un autor existente, se cambiara de estado a inactivo.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Devuelve un mensaje de confirmación indicando que el autor fue eliminado correctamente del sistema.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "Autor Eliminado"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensaje": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "mensaje": "No se encontro ningun autor"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
