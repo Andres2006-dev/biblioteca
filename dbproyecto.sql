@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-06-2025 a las 03:54:12
+-- Tiempo de generación: 17-06-2025 a las 15:26:29
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,51 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dbproyecto`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `t_autores`
+--
+
+CREATE TABLE `t_autores` (
+  `aut_id` int(11) NOT NULL,
+  `aut_uid` text NOT NULL,
+  `aut_nombre` text NOT NULL,
+  `aut_estado` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `t_autores`
+--
+
+INSERT INTO `t_autores` (`aut_id`, `aut_uid`, `aut_nombre`, `aut_estado`) VALUES
+(3, '3dd6c21a-ecc1-407f-b01a-57aeb1337e59', 'elkin', '1'),
+(4, '13be681a-6695-4134-9d13-ed7c291f3d62', 'dolcey', '0'),
+(5, 'bf66e60e-41e6-4399-a7a9-3aa258611a91', 'gabriel garcia marquez', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `t_categorias`
+--
+
+CREATE TABLE `t_categorias` (
+  `cat_id` int(11) NOT NULL,
+  `cat_uid` text NOT NULL,
+  `cat_tipo` varchar(255) NOT NULL,
+  `cat_estado` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `t_categorias`
+--
+
+INSERT INTO `t_categorias` (`cat_id`, `cat_uid`, `cat_tipo`, `cat_estado`) VALUES
+(1, '7995c7c4-6410-4d03-ba28-6f1ad576cee6', 'matematicas', 0),
+(2, '9ef2bc04-283a-47b3-a42c-637798d00555', 'ingles', 1),
+(3, '8aadb2b0-0fd3-4f7c-a903-1b93985631b3', 'Sistemas', 1),
+(4, 'a90afccf-add6-4537-9b8f-399a03932548', 'Español', 1);
 
 -- --------------------------------------------------------
 
@@ -54,6 +99,18 @@ INSERT INTO `t_usuarios` (`id`, `uid`, `primer_nombre`, `segundo_nombre`, `prime
 --
 
 --
+-- Indices de la tabla `t_autores`
+--
+ALTER TABLE `t_autores`
+  ADD PRIMARY KEY (`aut_id`);
+
+--
+-- Indices de la tabla `t_categorias`
+--
+ALTER TABLE `t_categorias`
+  ADD PRIMARY KEY (`cat_id`);
+
+--
 -- Indices de la tabla `t_usuarios`
 --
 ALTER TABLE `t_usuarios`
@@ -62,6 +119,18 @@ ALTER TABLE `t_usuarios`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `t_autores`
+--
+ALTER TABLE `t_autores`
+  MODIFY `aut_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `t_categorias`
+--
+ALTER TABLE `t_categorias`
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `t_usuarios`
