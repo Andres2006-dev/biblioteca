@@ -7,7 +7,7 @@ categoria_bp = Blueprint('categorias', __name__)
 
 #ruta para listar categoria
 @categoria_bp.route('/', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def listadoCategoria():
     con = current_app.mysql.connection.cursor() #poder interacctuar con la db
     con.execute("SELECT * FROM t_categorias WHERE cat_estado = 1")
@@ -21,10 +21,18 @@ def listadoCategoria():
 
 #ruta para registrar categoria
 @categoria_bp.route('/', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def registrarCategoria():
-    campos_requeridos = ["cat_tipo"]
+    
+    if not request.is_json:
+        return jsonify({"mensaje":"No se estan enviando datos en el cuerpo"}),400
+    
     peticion    = request.get_json()
+    if peticion  is None:
+        return jsonify({"mensaje":"No se recibió información en el cuerpo de la petición"}),400  
+    
+    
+    campos_requeridos = ["cat_tipo"]
     #poder hacer una validacion mas fuerte por si no se envia el campo o por si se envia vacio
     faltantes = [x for x in campos_requeridos if not peticion.get(x) or str(peticion.get(x)).strip()==""] #el strip me quita los espacios en blanco
 
@@ -58,11 +66,17 @@ def registrarCategoria():
 
 #ruta para editar categoria
 @categoria_bp.route('/<uid>', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def editarCategoria(uid):
-    campos_requeridos = ["cat_tipo"]
+    
+    if not request.is_json:
+        return jsonify({"mensaje":"No se estan enviando datos en el cuerpo"}),400
+    
     peticion    = request.json
+    if peticion  is None:
+        return jsonify({"mensaje":"No se recibió información en el cuerpo de la petición"}),400  
 
+    campos_requeridos = ["cat_tipo"]
     #poder hacer una validacion mas fuerte por si no se envia el campo o por si se envia vacio
     faltantes = [x for x in campos_requeridos if not peticion.get(x) or str(peticion.get(x)).strip()==""] #el strip me quita los espacios en blanco
 
@@ -100,7 +114,7 @@ def editarCategoria(uid):
 
 #ruta par6a eliminar categoria
 @categoria_bp.route('/<uid>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def eliminarCategoria(uid):
     cat_estado = 0
     try:

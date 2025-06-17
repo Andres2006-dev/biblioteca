@@ -21,10 +21,25 @@ def contraseniaValida(contrasenia):
 
 @usuarios_bp.route('/login', methods=['POST'])
 def login():
-    correo = request.json['correo']
+    
+    if not request.is_json:
+        return jsonify({"mensaje":"No se estan enviando datos en el cuerpo"}),400
+    
+    peticion = request.get_json()    
+    
+    if peticion  is None:
+        return jsonify({"mensaje":"No se recibió información en el cuerpo de la petición"}),400
+    
+    campos_requeridos = ['correo','contrasenia']
+    faltantes = [campo for campo in campos_requeridos if not peticion.get(campo) or str(peticion.get(campo)).strip()==""]
+    
+    if len(faltantes)>0:
+        return jsonify({"mensaje":f"faltan campos en la peticion {faltantes}"}),400
+    
+    correo = peticion['correo'].strip()
     # if not correoValido(correo):
     #     return jsonify({"mensaje":"El correo ingresado es invalido"})
-    contrasenia = request.json['contrasenia']
+    contrasenia = peticion['contrasenia'].strip()
 
     try:
         con = current_app.mysql.connection.cursor()
@@ -65,9 +80,16 @@ def listadoUsuarios():
 @usuarios_bp.route('/', methods=['POST'])
 @jwt_required()
 def registroUsuario():
-    campos_requeridos = ["primer_nombre", "primer_apellido", "correo", "telefono", "direccion","contrasenia"]
+    
+    if not request.is_json:
+        return jsonify({"mensaje":"No se estan enviando datos en el cuerpo"}),400
+    
+    
     peticion    = request.json
+    if peticion  is None:
+        return jsonify({"mensaje":"No se recibió información en el cuerpo de la petición"}),400
 
+    campos_requeridos = ["primer_nombre", "primer_apellido", "correo", "telefono", "direccion","contrasenia"]
     #poder hacer una validacion mas fuerte por si no se envia el campo o por si se envia vacio
     faltantes = [x for x in campos_requeridos if not peticion.get(x) or str(peticion.get(x)).strip()==""] #el strip me quita los espacios en blanco
 
@@ -115,8 +137,16 @@ def registroUsuario():
 @usuarios_bp.route('/<uid>', methods=['PUT'])
 @jwt_required()
 def editarUsuario(uid):
+    
+    if not request.is_json:
+        return jsonify({"mensaje":"No se estan enviando datos en el cuerpo"}),400
+    
+    peticion = request.json   
+    if peticion  is None:
+        return jsonify({"mensaje":"No se recibió información en el cuerpo de la petición"}),400  
+    
+    
     campos_requeridos = ["primer_nombre", "primer_apellido", "correo", "telefono", "direccion"]
-    peticion = request.json     
     #poder hacer una validacion mas fuerte por si no se envia el campo o por si se envia vacio
     faltantes = [x for x in campos_requeridos if not peticion.get(x) or str(peticion.get(x)).strip()==""] #el strip me quita los espacios en blanco
     if len(faltantes)>0:

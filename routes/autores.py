@@ -22,9 +22,15 @@ def listadoAutores():
 @autores_bp.route('/', methods=['POST'])
 @jwt_required()
 def registrarAutor():
-    campos_requeridos = ["aut_nombre"]
+    
+    if not request.is_json:
+        return jsonify({"mensaje":"No se estan enviando datos en el cuerpo"}),400
+    
     peticion    = request.json
+    if peticion  is None:
+        return jsonify({"mensaje":"No se recibió información en el cuerpo de la petición"}),400  
 
+    campos_requeridos = ["aut_nombre"]
     #poder hacer una validacion mas fuerte por si no se envia el campo o por si se envia vacio
     faltantes = [x for x in campos_requeridos if not peticion.get(x) or str(peticion.get(x)).strip()==""] #el strip me quita los espacios en blanco
     if len(faltantes)>0:
@@ -62,9 +68,15 @@ def registrarAutor():
 @autores_bp.route('/<uid>', methods=['PUT'])
 @jwt_required()
 def editarAutor(uid):
-    campos_requeridos = ["aut_nombre"]
+    
+    if not request.is_json:
+        return jsonify({"mensaje":"No se estan enviando datos en el cuerpo"}),400
+    
     peticion    = request.json
+    if peticion  is None:
+        return jsonify({"mensaje":"No se recibió información en el cuerpo de la petición"}),400  
 
+    campos_requeridos = ["aut_nombre"]
     #poder hacer una validacion mas fuerte por si no se envia el campo o por si se envia vacio
     faltantes = [x for x in campos_requeridos if not peticion.get(x) or str(peticion.get(x)).strip()==""] #el strip me quita los espacios en blanco
     if len(faltantes)>0:

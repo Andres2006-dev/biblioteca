@@ -16,7 +16,7 @@
   },
   "servers": [
     {
-      "url": "https://biblioteca-ojl0.onrender.com"
+      "url": "http://192.168.1.8:5000"
     }
   ],
   "tags": [
@@ -34,7 +34,7 @@
     }
   ],
   "paths": {
-    "/usuario": {
+    "/usuarios": {
       "post": {
         "tags": [
           "Usuarios"
@@ -243,7 +243,7 @@
       }
 
     },
-    "/usuario/login": {
+    "/usuarios/login": {
       "post": {
         "tags": [
           "Usuarios"
@@ -316,7 +316,7 @@
         }
       }
     },
-    "/usuario/{uid}": {
+    "/usuarios/{uid}": {
       "put": {
         "tags": [
           "Usuarios"
