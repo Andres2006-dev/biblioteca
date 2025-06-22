@@ -6,7 +6,7 @@ autores_bp = Blueprint('autores', __name__)
 
 #ruta para listar los autores
 @autores_bp.route('/', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def listadoAutores():
     con = current_app.mysql.connection.cursor() #poder interacctuar con la db
     con.execute("SELECT * FROM t_autores WHERE aut_estado = 1")
@@ -20,7 +20,7 @@ def listadoAutores():
 
 #ruta para registar los autores
 @autores_bp.route('/', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def registrarAutor():
     
     if not request.is_json:
@@ -66,7 +66,7 @@ def registrarAutor():
 
 #ruta para editar los autores
 @autores_bp.route('/<uid>', methods=['PUT'])
-@jwt_required()
+# @jwt_required()
 def editarAutor(uid):
     
     if not request.is_json:
@@ -114,7 +114,7 @@ def editarAutor(uid):
 
 #ruta para eliminar autores 
 @autores_bp.route('/<uid>', methods=['DELETE'])
-@jwt_required()
+# @jwt_required()
 def eliminarAutor(uid):
     aut_estado = 0
     try:
