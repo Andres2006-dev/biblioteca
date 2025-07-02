@@ -89,7 +89,7 @@ def editarAutor(uid):
     #validar que no exista un autor con ese nombre
     con.execute("SELECT * FROM t_autores  WHERE aut_nombre = %s",[aut_nombre])
     autores = con.fetchall()
-    if autores[0][1]!=uid:
+    if autores and autores[0][1]!=uid:
         return jsonify({"mensaje":"Ya existe un autor con este nombre"})
 
     try:
