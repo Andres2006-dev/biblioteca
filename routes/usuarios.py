@@ -165,7 +165,7 @@ def editarUsuario(uid):
     con.execute("SELECT * FROM t_usuarios WHERE correo=%s",[correo])
     usuario = con.fetchall()
     print("usuarios: ", usuario)
-    if usuario[0][1]!=uid:
+    if usuario and usuario[0][1]!=uid:
         return jsonify({"mensaje":"El correo electrónico ya está registrado"}),400
     #------------------ 
     telefono             =peticion["telefono"].strip()
