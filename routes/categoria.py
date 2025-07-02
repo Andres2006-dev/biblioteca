@@ -7,7 +7,7 @@ categoria_bp = Blueprint('categorias', __name__)
 
 #ruta para listar categoria
 @categoria_bp.route('/', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def listadoCategoria():
     con = current_app.mysql.connection.cursor() #poder interacctuar con la db
     con.execute("SELECT * FROM t_categorias WHERE cat_estado = 1")
@@ -21,7 +21,7 @@ def listadoCategoria():
 
 #ruta para registrar categoria
 @categoria_bp.route('/', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def registrarCategoria():
     
     if not request.is_json:
@@ -66,7 +66,7 @@ def registrarCategoria():
 
 #ruta para editar categoria
 @categoria_bp.route('/<uid>', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def editarCategoria(uid):
     
     if not request.is_json:
@@ -114,7 +114,7 @@ def editarCategoria(uid):
 
 #ruta par6a eliminar categoria
 @categoria_bp.route('/<uid>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def eliminarCategoria(uid):
     cat_estado = 0
     try:

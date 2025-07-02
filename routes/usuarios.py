@@ -74,7 +74,7 @@ def login():
     
 #ruta para listar los usuarios
 @usuarios_bp.route('/', methods=['GET'])
-# @jwt_required()
+@jwt_required()
 def listadoUsuarios():
     con = current_app.mysql.connection.cursor() #poder interacctuar con la db
     con.execute("SELECT * FROM t_usuarios WHERE estado = 1")
@@ -91,7 +91,7 @@ def listadoUsuarios():
 
 #ruta para registrar usuarios
 @usuarios_bp.route('/', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def registroUsuario():
     
     if not request.is_json:
@@ -148,7 +148,7 @@ def registroUsuario():
 
 #editar usuario
 @usuarios_bp.route('/<uid>', methods=['PUT'])
-# @jwt_required()
+@jwt_required()
 def editarUsuario(uid):
     
     if not request.is_json:
@@ -206,7 +206,7 @@ def editarUsuario(uid):
 
 #eliminar usuario (cambiar de estado)
 @usuarios_bp.route('/<uid>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def eliminarUsuario(uid):
     estado = 0
     try:
