@@ -54,8 +54,21 @@ def login():
             return jsonify({"mensaje": "La contraseña es incorrecta"}), 401
         
         acces_token = create_access_token(identity=correo)
+        usuario_dict = {
+                        "id":usuario[0],
+                        "uid":usuario[1],
+                        "primer_nombre":usuario[2],
+                        "segundo_nombre":usuario[3],
+                        "primer_apellido":usuario[4],
+                        "segundo_apellido":usuario[5],
+                        "estado":usuario[6],
+                        "correo":usuario[7],
+                        "telefono":usuario[8],
+                        "direccion":usuario[9]
+                        }
         return jsonify({"mensaje":"Inicio de sesion exitoso",
-                        "token"  :acces_token}),200
+                        "token"  :acces_token,
+                        **usuario_dict}),200
     except Exception as e:
         return jsonify({"mensaje":f"Error al iniciar sesion: {str(e)}"}),500
     
