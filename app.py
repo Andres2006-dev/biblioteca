@@ -14,7 +14,7 @@ app.mysql = mysql
 jwt = JWTManager(app)
 
 CORS(app,
-    origins=["http://localhost:51383", "https://biblioteca-v97t.onrender.com"],
+    origins=["http://localhost:53763", "http://localhost:51383", "https://biblioteca-v97t.onrender.com"],
     supports_credentials=True,
     allow_headers=["Content-Type", "Authorization"],
     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
