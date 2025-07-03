@@ -90,7 +90,7 @@ def editarCategoria(uid):
     #validar que no exista una categoria con ese nombre
     con.execute("SELECT * FROM t_categorias  WHERE cat_tipo = %s",[cat_tipo])
     categoria = con.fetchall()
-    if categoria[0][1]!=uid:
+    if categoria and categoria[0][1]!=uid:
         return jsonify({"mensaje":"Ya existe una categoria con este nombre"}) 
     try:
         con.execute("SELECT * FROM t_categorias WHERE cat_uid=%s",[uid])
